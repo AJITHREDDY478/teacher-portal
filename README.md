@@ -18,11 +18,11 @@ This Ruby on Rails application allows teachers to manage students and their deta
  - **Responsive Design:** Tailwind CSS is used to ensure the application is mobile-friendly and visually appealing.
  - **Security Best Practices:** Application ensures secure data handling by implementing input validation and other security measures.
 
-### Prerequisites
-## Ruby version
+## Prerequisites
+### Ruby version
 Ensure you have **Ruby 3.2.2** or later installed to run the application.
 
-## System dependencies
+### System dependencies
 - **Rails 7.x** or later
 - **Node.js** for managing JavaScript assets
 - **Yarn** for managing front-end dependencies
@@ -35,4 +35,71 @@ bundle install      # Install Ruby gems
 yarn install        # Install JavaScript packages
 ```
 ### Getting Started Locally
+1. **Clone the Repository**
+   First, clone this repository to your local machine:
+```ruby
+git clone https://github.com/your-username/teacher-portal.git
+cd teacher-portal
+```
+3. **Install Dependencies**
+Run the following commands to install all necessary dependencies:
+```ruby
+bundle install      # Install Ruby gems
+yarn install        # Install JavaScript packages
+```
+5. **Set Up the Database**
+Create and migrate the database:
+```ruby
+rails db:create     # Create the database
+rails db:migrate    # Apply migrations
+rails db:seed       # Seed the database with initial data (optional)
+```
+7. **Run the Server**
+Start the Rails development server:
+```ruby
+rails server
+```
+Visit http://localhost:3000 in your browser to see the application in action.
 
+## Tailwind CSS Setup
+This project uses Tailwind CSS for responsive and utility-first styling. Tailwind is fully integrated and can be customized through the tailwind.config.js file.
+
+## Folder Structure
+   - `app/controllers`: Handles all requests related to teachers and students.
+   - `app/models`: Contains the Teacher and Student models.
+   - `app/views`: Includes views for listing, adding, and editing teachers and students.
+   - `db/migrate`: Contains database migration files for teacher and student tables.
+   - `config`: Includes Rails configuration files.
+   - `public`: Contains static assets.
+## Security Best Practices
+   - Input validation is implemented to prevent invalid or malicious data entry.
+   - Data encryption is in place to protect sensitive user data.
+   - Security headers are configured to prevent common vulnerabilities such as XSS and CSRF attacks.
+
+### Login Process for Teachers (via Rails Console)
+## Step 1: Create a Teacher Using Rails Console
+To create a new teacher, first open the Rails console:
+```ruby
+rails console
+```
+Next, create a new teacher record by providing the teacher's name and password. In this example, replace "teacher_name" and "password" with the desired teacher's name and password:
+```ruby
+teacher = Teacher.new(name: "teacher_name", password: "password")
+teacher.save
+```
+This will create a new teacher and save it to the database. The teacher_id will be automatically generated upon saving the teacher.
+## Step 2: Find the Teacher's `teacher_id`
+After saving the teacher, you can retrieve the teacher_id by running the following command:
+```ruby
+teacher.teacher_id
+```
+## Step 3: Login Using teacher_id and Password
+Once the teacher is created, you can use the generated `teacher_id` and the password to log in to the application. For the first login attempt, use the `teacher_id` and the password you've set while creating the teacher.
+
+In login form, enter the `teacher_id` as the username and the password to log in to the application.
+
+**Example:**
+  - Username: The teacher_id generated for the teacher.
+  - Password: The password you set when creating the teacher.
+
+*This will authenticate the teacher and grant them access to the Teacher Portal application.*
