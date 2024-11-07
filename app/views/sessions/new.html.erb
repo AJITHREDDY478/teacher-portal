@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Teacher Login</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <%= csrf_meta_tags %>
+  
+  <!-- Tailwind Custom Styles -->
+  <%= stylesheet_link_tag 'application', 'data-turbo-track': 'reload' %>
+</head>
+
+<body class="bg-gray-100">
+
+<% if flash[:alert] %>
+  <div class="alert alert-danger text-red-500 text-center p-4">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+
+<section class="flex items-center justify-center min-h-screen bg-gray-100 py-8">
+  <div class="w-full max-w-xs">
+  <%= form_with(url: login_path, method: :post, local: true, class: "bg-white bg-opacity-70 backdrop-blur-lg shadow-md rounded px-8 pt-6 pb-8 mb-4") do |form| %>
+    <h2 class="text-2xl mb-4 text-center">Teacher Login</h2>
+
+      <!-- Username Field -->
+      <div class="mb-4">
+        <%= form.label :teacher_id, "Username", class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.text_field :teacher_id, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "Enter your username", required: true %>
+      </div>
+
+      <!-- Password Field -->
+      <div class="mb-6 relative">
+        <%= form.label :password, "Password", class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= form.password_field :password, id: 'password-field', class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline", placeholder: "Enter your password", required: true %>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex items-center justify-between">
+        <%= form.submit 'Login', class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full' %>
+      </div>
+
+      <p class="text-center text-gray-600 text-sm mt-4">
+        <a href="#" class="text-blue-500 hover:text-blue-700">Forgot Password?</a>
+      </p>
+    <% end %>      
+  </div>
+</section>
+
+</body>
+</html>

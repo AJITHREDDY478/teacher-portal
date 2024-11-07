@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <title>Students List</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body class="bg-gray-100">
+
+<% if flash[:notice] %>
+  <div class="alert alert-success text-green-500 text-center p-4">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
+    <h1 class="text-3xl font-bold text-center mb-4">Student List</h1> <!-- Added heading -->
+
+<section class="flex items-center justify-center bg-gray-100 py-0 mt-0">
+  <div class="w-full max-w-4xl">
+    <!-- Add New Student Button -->
+    <div class="mb-4 text-right">
+      <button onclick="toggleModal('newStudentModal')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Add New Student
+      </button>
+    </div>
+
+    <!-- Students Table -->
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+      <table class="min-w-full table-auto">
+        <thead>
+          <tr>
+            <th class="py-2 px-4 border-b text-left">Std Id</th>
+            <th class="py-2 px-4 border-b text-left">Name</th>
+            <th class="py-2 px-4 border-b text-left">Subject</th>
+            <th class="py-2 px-4 border-b text-left">Marks</th>
+            <th class="py-2 px-4 border-b text-left">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @students.each do |student| %>
+            <tr>
+            <% if student.student_id.present? %>
+            <td class="py-2 px-4 border-b"><%= student.student_id %></td>
+          <% else %>
+            <td class="py-2 px-4 border-b">N/A</td>
+          <% end %>
+          <td class="py-2 px-4 border-b"><%= student.name %></td>          
+              <td class="py-2 px-4 border-b"><%= student.subject_name %></td>
+              <td class="py-2 px-4 border-b"><%= student.marks %></td>
+              <td class="py-2 px-4 border-b">
+                <%= link_to 'Edit', edit_student_path(student), class: 'text-blue-500 hover:text-blue-700' %> |
+                
+                <%= form_with(model: student, method: :delete, data: { confirm: 'Are you sure you want to delete this student?' }, class: 'inline') do |form| %>
+                  <%= form.submit 'Delete', class: 'text-red-500 hover:text-red-700 bg-transparent border-none cursor-pointer' %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pagination -->
+    <div class="mt-4">
+      <%= will_paginate @students %>
+    </div>
+  </div>
+</section>
+
+<!-- Add New Student Modal -->
+<div id="newStudentModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex justify-center items-center">
+  <div class="bg-white p-8 rounded-lg shadow-md w-1/2">
+    <h2 class="text-2xl mb-4">Add New Student</h2>
+    
+    <%= form_with(model: @student, url: students_path, method: :post, local: true, class: 'space-y-4') do |form| %>
+      <div class="mb-4">
+        <%= form.label :name, 'Name', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <%= form.text_field :name, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', placeholder: 'Enter name', required: true %>
+      </div>
+
+      <div class="mb-4">
+        <%= form.label :subject_name, 'Subject', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+        <%= form.text_field :subject_name, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', placeholder: 'Enter subject', required: true %>
+      </div>
+
+      <div class="mb-6">
+      <%= form.label :marks, 'Marks', class: 'block text-gray-700 text-sm font-bold mb-2' %>
+      <%= form.number_field :marks, class: 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', placeholder: 'Enter marks', required: true, oninput: "validateMarks(this)" %>
+      <small id="marksWarning" class="text-red-500 hidden">Marks should be out of 100.</small>
+    </div>
+
+      <div class="flex justify-between">
+        <%= form.submit 'Add Student', class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline' %>
+        <button type="button" onclick="toggleModal('newStudentModal')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+          Cancel
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  function validateMarks(input) {
+    const warning = document.getElementById('marksWarning');
+    if (input.value > 100) {
+      warning.classList.remove('hidden'); // Show warning
+      input.classList.add('border-red-500'); // Add red border for error
+    } else {
+      warning.classList.add('hidden'); // Hide warning
+      input.classList.remove('border-red-500'); // Remove red border
+    }
+  }
+
+  function toggleModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.classList.toggle('hidden');
+  }
+</script>
+
+
+</body>
+</html>

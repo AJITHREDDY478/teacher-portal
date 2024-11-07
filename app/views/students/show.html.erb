@@ -1,0 +1,6 @@
+<!-- app/views/students/show.html.erb -->
+<h1>Student Details</h1>
+<p><strong>Name:</strong> <%= @student.name %></p>
+<p><strong>Subject:</strong> <%= @student.subject_name %></p>
+<p><strong>Marks:</strong> <%= @student.marks %></p>
+<%= link_to 'Back to List', students_path, class: 'text-blue-500 hover:text-blue-700' %>
